@@ -1,8 +1,10 @@
-﻿using System;
+﻿using DevExpress.XtraEditors;
+using System;
 using System.Configuration;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Generar_Licencias
 {
@@ -17,10 +19,25 @@ namespace Generar_Licencias
 
             foreach (byte x in hash)
             {
-                hashString += String.Format("{0:x2}", x);
+                hashString += String.Format("{0:x4} ", x);
+            }
+
+            hashString += Environment.NewLine;
+
+            foreach (byte x in hash)
+            {
+                hashString += String.Format("{0} ", x);
             }
             return hashString;
         }
+        public static void UGEN(string text = "")
+        {
+            string r = "00e6 0050 0025 004e 0019 00e7 00ab 00b6 007f 0077 0087 0004 0021 00d8 0066 0052 0088 00a5 009b 0020 0064 001f 0091 008a 00a0 0081 0003 0001 00b2 00f4 00ac 000f";
+
+            string[] x = r.Replace(' ',',').Split(',');
+            string xx = x[0].ToString();
+        }
+
 
         public static string Encrypt(string toEncrypt, string key, bool useHashing = true)
         {

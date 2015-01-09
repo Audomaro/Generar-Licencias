@@ -12,6 +12,7 @@ namespace Generar_Licencias
             DateTime Hora = DateTime.Now;
             string Archivo = string.Format(@"licencias\{0}_{1}_{2:dd-MM-yyyy HH.mm.ss tt}.txt", Sistema, Empresa, Hora);
             string ArchivoLibre = string.Format(@"licencias\{0}_{1}_{2:dd-MM-yyyy HH.mm.ss tt}.Libre.txt", Sistema, Empresa, Hora);
+            string Archivo2 = string.Format(@"licencias\{0}_{1}_{2:dd-MM-yyyy HH.mm.ss tt}.gen.txt", Sistema, Empresa, Hora);
 
             StringBuilder sbLicencia = new StringBuilder();
             sbLicencia.Append(SHA5.Encrypt(UniqueID, UniqueID) + '|');
@@ -34,8 +35,19 @@ namespace Generar_Licencias
                 fs.Write(sbLicencia.ToString());
             }
 
+            sbLicencia.Clear();
+            sbLicencia.AppendLine(SHA5.GEN(UniqueID));
+            sbLicencia.AppendLine(SHA5.GEN(Sistema));
+            sbLicencia.AppendLine(SHA5.GEN(Empresa));
+            sbLicencia.Append(SHA5.GEN(Valido.ToString()));
+            using (StreamWriter fs = new StreamWriter(Archivo2, true))
+            {
+                fs.Write(sbLicencia.ToString());
+            }
+
             Process.Start(Archivo);
             Process.Start(ArchivoLibre);
+            Process.Start(Archivo2);
         }
     }
 }
